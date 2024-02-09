@@ -19,9 +19,8 @@
 	</build>
 	<repositories>
 		<repository>
-			<id>ch.cam.ac.uk</id>
-			<name>Cambridge Maven2 Repository</name>
-			<url>https://maven.ch.cam.ac.uk/m2repo/</url>
+			<id>central</id>
+			<url>http://maven.aliyun.com/nexus/content/groups/public</url>
 		</repository>
 	</repositories>
 	<dependencies>
@@ -56,11 +55,6 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>jama</groupId>
-			<artifactId>jama</artifactId>
-			<version>1.0.2</version>
-		</dependency>
-		<dependency>
 			<groupId>commons-lang</groupId>
 			<artifactId>commons-lang</artifactId>
 			<version>2.4</version>
@@ -69,11 +63,6 @@
 			<groupId>commons-math</groupId>
 			<artifactId>commons-math</artifactId>
 			<version>1.2</version>
-		</dependency>
-		<dependency>
-			<groupId>jama</groupId>
-			<artifactId>jama</artifactId>
-			<version>1.0.2</version>
 		</dependency>
 	</dependencies>
 	<reporting>

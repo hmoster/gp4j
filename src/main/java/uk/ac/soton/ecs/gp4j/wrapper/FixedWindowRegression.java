@@ -2,7 +2,7 @@ package uk.ac.soton.ecs.gp4j.wrapper;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Required;
+//import org.springframework.beans.factory.annotation.Required;
 
 import uk.ac.soton.ecs.gp4j.gp.GaussianPredictor;
 import uk.ac.soton.ecs.gp4j.gp.GaussianRegression;
@@ -95,9 +95,9 @@ public class FixedWindowRegression<T extends GaussianPredictor<?>> implements
 		this.windowSize = windowSize;
 	}
 
-	@Required
-	public void setRegression(GaussianRegression<T> regression) {
-		this.regression = regression;
-	}
+	//@Required
+	//public void setRegression(GaussianRegression<T> regression) {
+	//	this.regression = regression;
+	//}
 
 }
