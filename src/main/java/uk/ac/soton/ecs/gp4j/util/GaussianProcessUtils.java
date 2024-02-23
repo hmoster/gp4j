@@ -9,7 +9,7 @@ import Jama.Matrix;
 
 public class GaussianProcessUtils {
 	public static Matrix drawSample(CovarianceFunction function,
-			double[] logHyper, Matrix testX, RandomData data) {
+									double[] logHyper, Matrix testX, RandomData data) {
 		Matrix covarianceMatrix = function.calculateCovarianceMatrix(logHyper,
 				testX);
 

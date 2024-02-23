@@ -79,7 +79,7 @@ public class GaussianProcessRegression implements
 		this.loghyper = new double[hyper.size()];
 
 		for (int i = 0; i < hyper.size(); i++) {
-			loghyper[i] = Math.log(hyper.get(i));
+			loghyper[i] = hyper.get(i);
 		}
 	}
 
@@ -114,10 +114,12 @@ public class GaussianProcessRegression implements
 		this.trainX = trainX;
 		this.trainY = trainY;
 
-		Matrix trainingCovarianceMatrix = covarianceFunction
+		//loghyper = GetBestLengthScale.chooseHyperparams(covarianceFunction, trainX);
+
+		Matrix K = covarianceFunction
 				.calculateCovarianceMatrix(loghyper, trainX);
 
-		CholeskyDecomposition chol = trainingCovarianceMatrix.chol();
+		CholeskyDecomposition chol = K.chol();
 		cholTrainingCovarianceMatrix = chol.getL();
 		alpha = chol.solve(trainY);
 		logLikelihood = new LogLikelihood(trainY, alpha,
@@ -131,13 +133,13 @@ public class GaussianProcessRegression implements
 	private void checkDimensions(Matrix x, Matrix y) {
 		Validate.notNull(covarianceFunction);
 		Validate.notNull(loghyper);
-
+        /*
 		if (covarianceFunction.getHyperParameterCount(x) != loghyper.length)
 			throw new IllegalArgumentException(
 					"Dimensionality of training points is incorrect. Expected "
 							+ covarianceFunction.getHyperParameterCount(x)
 							+ " hyperparameters, but got " + loghyper.length);
-
+        */
 		if (y.getColumnDimension() != 1)
 			throw new IllegalArgumentException(
 					"Dimensionality of training output should be 1");

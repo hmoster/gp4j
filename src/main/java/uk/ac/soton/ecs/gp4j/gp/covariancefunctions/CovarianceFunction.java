@@ -8,6 +8,8 @@ public interface CovarianceFunction {
 
 	Matrix calculateCovarianceMatrix(double[] loghyper, Matrix trainX);
 
+	Matrix calculateTrainGradientMatrix(double[] loghyper, Matrix trainX);
+
 	Matrix calculateTrainTestCovarianceMatrix(double[] loghyper, Matrix trainX,
 			Matrix testX);
 

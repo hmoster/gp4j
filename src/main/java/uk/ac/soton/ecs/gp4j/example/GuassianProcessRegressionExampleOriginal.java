@@ -22,7 +22,7 @@ public class GuassianProcessRegressionExampleOriginal {
 	public static void main(String[] args) {
 		// normalGPExample();
 
-		learningGPExample();
+		learningGPExample2D();
 
 	}
 
@@ -47,14 +47,17 @@ public class GuassianProcessRegressionExampleOriginal {
 				        new Matern3ARDCovarianceFunction(),
 						NoiseCovarianceFunction.getInstance()));
 
-		regression.setPriors(new BasicPrior(11, 1.0, 2.0), new BasicPrior(11,
-				1.0, 2.0), new BasicPrior(1, .01, 1.0));
+		//regression.setPriors(new BasicPrior(11, 1.0, 2.0), new BasicPrior(11,
+		//		1.0, 2.0), new BasicPrior(1, .01, 1.0));
+		regression.setPriors(new BasicPrior(1, 1.0, 1.0), new BasicPrior(1,
+				1.0, 1.0),new BasicPrior(1, 1.0, 1.0));
 
 		//double[] trainX = new double[] { 1.0, 2.0, 3.0, 4.0, 5.0, 6.0 };
 		//double[] trainY = new double[] { 1.0, 1.0, 1.0, 1.5, .5, 0.0 };
 		double[] trainX = { -1.6595599059485195, 4.4064898688431615, -9.997712503653101, -3.9533485473632046 };
 		//double[] trainY = { -23.711498517122976, -3.978213751158454, -170.94053032762017, -50.34905602111799 };
-		double[] trainY = { 0.59394467, 0.89810942, -1.675413, 0.1833589 };
+		//double[] trainY = { 0.59394467, 0.89810942, -1.675413, 0.1833589 };
+		double[] trainY = { -23.711498517122976, -3.978213751158454, -170.94053032762017, -50.34905602111799 };
 
 		/*
 		Random rand = new Random(12345);
@@ -78,8 +81,7 @@ public class GuassianProcessRegressionExampleOriginal {
 					+ hyperParameterWeights.get(hyperparameterValue));
 		}
 
-		double[] testX = new double[] { -1.6595599059485195, -5.0, -4.0, -3.0, 14.992740469130709, -1.0, 0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0,
-				8.0, 9.0, 10.0 };
+		double[] testX = new double[] { -1.6595599059485195, -5.0, -4.0};
 
 		//double[] testX = new double[] { -1.6595599059485195 };
 		GaussianProcessPrediction prediction = predictor
@@ -94,11 +96,13 @@ public class GuassianProcessRegressionExampleOriginal {
 	private static void learningGPExample2D() {
 		GaussianProcessRegressionBMC regression = new GaussianProcessRegressionBMC();
 		regression.setCovarianceFunction(new SumCovarianceFunction(
-				SquaredExponentialCovarianceFunction.getInstance(),
+				new Matern3ARDCovarianceFunction(),
 				NoiseCovarianceFunction.getInstance()));
 
-		regression.setPriors(new BasicPrior(11, 1.0, 2.0), new BasicPrior(11,
-				1.0, 2.0), new BasicPrior(1, .01, 1.0));
+		//regression.setPriors(new BasicPrior(11, 1.0, 2.0), new BasicPrior(11,
+		//		1.0, 2.0), new BasicPrior(1, .01, 1.0));
+		regression.setPriors(new BasicPrior(1, 1.0, 1.0), new BasicPrior(1,
+				1.0, 1.0),new BasicPrior(1, 1.0, 1.0));
 
 		//double[] trainX = new double[] { 1.0, 2.0, 3.0, 4.0, 5.0, 6.0 };
 		//double[] trainY = new double[] { 1.0, 1.0, 1.0, 1.5, .5, 0.0 };
@@ -108,7 +112,7 @@ public class GuassianProcessRegressionExampleOriginal {
 		Random rand = new Random(12345);
 		double[][] trainX = new double[20][2];
 		double[][] trainY = new double[20][1];
-		for(int i=0; i<10; i++) {
+		for(int i=0; i<20; i++) {
 			double x1 = rand.nextDouble() * (20 - (-10)) + (-10);
 			double x2 = rand.nextDouble() * (20 - (-10)) + (-10);
 			trainX[i][0] = x1;
@@ -135,14 +139,15 @@ public class GuassianProcessRegressionExampleOriginal {
 		GaussianProcessPrediction prediction = predictor
 				.calculatePrediction(testX);
 
-		prediction.getMean().print(1, 1);
-		prediction.getVariance().print(1, 1);
+		prediction.getMean().print(1, 3);
+		prediction.getVariance().print(1, 3);
+		prediction.getStandardDeviation().print(1, 3);
 	}
 
 	private static void learningGPExample3D() {
 		GaussianProcessRegressionBMC regression = new GaussianProcessRegressionBMC();
 		regression.setCovarianceFunction(new SumCovarianceFunction(
-				SquaredExponentialCovarianceFunction.getInstance(),
+				new Matern3ARDCovarianceFunction(),
 				NoiseCovarianceFunction.getInstance()));
 
 		regression.setPriors(new BasicPrior(11, 1.0, 2.0), new BasicPrior(11,
@@ -199,6 +204,7 @@ public class GuassianProcessRegressionExampleOriginal {
 
 	}
 
+	/*
 	private static void normalGPExample() {
 		GaussianProcessRegression regression = new GaussianProcessRegression(
 				new double[] { 0.0, 0.0 }, SquaredExponentialCovarianceFunction
@@ -219,4 +225,5 @@ public class GuassianProcessRegressionExampleOriginal {
 		prediction.getMean().print(10, 10);
 		prediction.getVariance().print(10, 10);
 	}
+	*/
 }

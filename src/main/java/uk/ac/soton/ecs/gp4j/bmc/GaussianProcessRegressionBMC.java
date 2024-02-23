@@ -1,19 +1,18 @@
 package uk.ac.soton.ecs.gp4j.bmc;
 
+
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang.NotImplementedException;
 import org.apache.commons.lang.Validate;
 import org.apache.commons.math.stat.StatUtils;
 
-import uk.ac.soton.ecs.gp4j.gp.GaussianPredictor;
-import uk.ac.soton.ecs.gp4j.gp.GaussianProcess;
-import uk.ac.soton.ecs.gp4j.gp.GaussianProcessRegression;
-import uk.ac.soton.ecs.gp4j.gp.GaussianRegression;
+import scala.collection.immutable.Vector;
+import uk.ac.soton.ecs.gp4j.gp.*;
 import uk.ac.soton.ecs.gp4j.gp.covariancefunctions.CovarianceFunction;
 import uk.ac.soton.ecs.gp4j.util.ArrayUtils;
 import uk.ac.soton.ecs.gp4j.util.MathUtils;
@@ -168,14 +167,29 @@ public class GaussianProcessRegressionBMC implements
 		return gpRegressions;
 	}
 
+
 	public GaussianProcessMixture calculateRegression(Matrix trainX,
 			Matrix trainY) {
 		initialize();
 		List<GaussianProcess> gaussianProcesses = new ArrayList<GaussianProcess>();
 
 		for (GaussianProcessRegression gpRegression : gpRegressions) {
+			double _y_train_mean = MatrixUtils.getMean(trainY);
+			double _y_train_std = MatrixUtils.getStd(trainY, _y_train_mean);
+			Matrix trainY_ = MatrixUtils.getNorm(trainY, _y_train_mean, _y_train_std);
+			double[] bestParams = GetBestLengthScale.chooseHyperparams(gpRegression.getFunction(), trainX, trainY_);
+			List<Double> bestParams_ = new ArrayList<Double>();
+			for (double d : bestParams) {
+				bestParams_.add(d);
+			}
+			bestParams_.add(0.0);
+			bestParams_.add(0.0);
+
+			//List bestParams_ = Arrays.asList(bestParams);
+			gpRegression.setHyperParameters(bestParams_);
 			GaussianProcess gp = gpRegression.calculateRegression(trainX,
-					trainY);
+					trainY_);
+			gp.setMeanStd(_y_train_mean, _y_train_std);
 			gaussianProcesses.add(gp);
 		}
 

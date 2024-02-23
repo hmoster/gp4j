@@ -1,9 +1,8 @@
 package uk.ac.soton.ecs.gp4j.gp.covariancefunctions;
 
+import Jama.Matrix;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.Validate;
-
-import Jama.Matrix;
 
 public abstract class AbstractCompositeCovarianceFunction implements
 		CovarianceFunction {

@@ -14,36 +14,44 @@ public abstract class CommutativeCompositeCovarianceFunction extends
 
 	public final Matrix calculateCovarianceMatrix(double[] loghyper,
 			Matrix trainX) {
+		/*
 		Validate.isTrue(getHyperParameterCount(trainX) == loghyper.length,
 				"Incorrect number of hyperparameters. Expected "
 						+ getHyperParameterCount(trainX) + ", got "
 						+ loghyper.length);
-
+        */
 		double[][] hyperParameters = partitionHyperParameters(loghyper, trainX);
 		Matrix result = functions[0].calculateCovarianceMatrix(
 				hyperParameters[0], trainX);
 
-		for (int i = 1; i < functions.length; i++) {
-			result = operation(result, functions[i].calculateCovarianceMatrix(
-					hyperParameters[i], trainX));
-		}
+		//for (int i = 1; i < functions.length; i++) {
+		//	result = operation(result, functions[i].calculateCovarianceMatrix(
+		//			hyperParameters[i], trainX));
+		//}
 
+		return result;
+	}
+
+	public Matrix calculateTrainGradientMatrix(double[] loghyper, Matrix trainX) {
+		double[][] hyperParameters = partitionHyperParameters(loghyper, trainX);
+		Matrix result = functions[0].calculateTrainGradientMatrix(
+				hyperParameters[0], trainX);
 		return result;
 	}
 
 	public final Matrix calculateTestCovarianceMatrix(double[] loghyper,
 			Matrix testX) {
-		Validate.isTrue(getHyperParameterCount(testX) == loghyper.length);
+		//Validate.isTrue(getHyperParameterCount(testX) == loghyper.length);
 
 		double[][] hyperParameters = partitionHyperParameters(loghyper, testX);
 
 		Matrix result = functions[0].calculateTestCovarianceMatrix(
 				hyperParameters[0], testX);
 
-		for (int i = 1; i < functions.length; i++) {
-			result = operation(result, functions[i]
-					.calculateTestCovarianceMatrix(hyperParameters[i], testX));
-		}
+		//for (int i = 1; i < functions.length; i++) {
+		//	result = operation(result, functions[i]
+		//			.calculateTestCovarianceMatrix(hyperParameters[i], testX));
+		//}
 
 		return result;
 	}
@@ -51,7 +59,7 @@ public abstract class CommutativeCompositeCovarianceFunction extends
 	public final Matrix calculateTrainTestCovarianceMatrix(double[] loghyper,
 			Matrix trainX, Matrix testX) {
 
-		Validate.isTrue(getHyperParameterCount(trainX) == loghyper.length);
+		//Validate.isTrue(getHyperParameterCount(trainX) == loghyper.length);
 
 		double[][] hyperParameters = partitionHyperParameters(loghyper, trainX);
 

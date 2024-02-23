@@ -21,6 +21,11 @@ public class NoiseCovarianceFunction implements CovarianceFunction {
 		return result;
 	}
 
+	public Matrix calculateTrainGradientMatrix(double[] loghyper, Matrix trainX) {
+		Matrix copyTrainX = trainX;
+		return copyTrainX;
+	}
+
 	public static NoiseCovarianceFunction getInstance() {
 		if (noise == null)
 			noise = new NoiseCovarianceFunction();

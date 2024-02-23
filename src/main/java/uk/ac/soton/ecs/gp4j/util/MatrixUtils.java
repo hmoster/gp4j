@@ -5,6 +5,63 @@ import Jama.Matrix;
 
 public class MatrixUtils {
 
+	public static Matrix sqrt(Matrix val) {
+		Matrix var2 = new Matrix(val.getRowDimension(), val.getColumnDimension());
+		double[][] var3 = var2.getArray();
+		double[][] A = val.getArray();
+
+		for(int i = 0; i < val.getRowDimension(); ++i) {
+			for(int j = 0; j < val.getColumnDimension(); ++j) {
+				var3[i][j] = Math.sqrt(A[i][j]);
+			}
+		}
+
+		return var2;
+	}
+
+	public static Matrix getNorm(Matrix val, double mean, double std) {
+		Matrix var2 = new Matrix(val.getRowDimension(), val.getColumnDimension());
+		double[][] var3 = var2.getArray();
+		double[][] A = val.getArray();
+
+		for(int i = 0; i < val.getRowDimension(); ++i) {
+			for(int j = 0; j < val.getColumnDimension(); ++j) {
+				var3[i][j] = (A[i][j] - mean) / std;
+			}
+		}
+
+		return var2;
+	}
+
+	public static double getMean(Matrix var) {
+		double[][] A = var.getArray();
+		double var1 = 0.0;
+
+		for(int i = 0; i < var.getRowDimension(); ++i) {
+			for(int j = 0; j < var.getColumnDimension(); ++j) {
+				var1 += A[i][j];
+			}
+		}
+
+		int len = var.getRowDimension()*var.getColumnDimension();
+		return var1/len;
+	}
+
+	public static double getStd(Matrix var, double mean) {
+		double[][] A = var.getArray();
+		double squaredDiffSum = 0.0;
+
+		for(int i = 0; i < var.getRowDimension(); ++i) {
+			for(int j = 0; j < var.getColumnDimension(); ++j) {
+				squaredDiffSum += Math.pow(A[i][j] - mean, 2);
+			}
+		}
+
+		int len = var.getRowDimension()*var.getColumnDimension();
+
+		return Math.sqrt(squaredDiffSum / len);
+	}
+
 	public static Matrix sum(Matrix matrix) {
 		double[][] result = new double[1][matrix.getColumnDimension()];
 		double[][] array = matrix.getArray();

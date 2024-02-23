@@ -44,11 +44,12 @@ public class GaussianProcessMixture implements
 	}
 
 	public GaussianProcessMixturePrediction calculatePrediction(Matrix testX) {
-		Matrix resultMean = new Matrix(testX.getRowDimension(), 1);
-		Matrix resultVariance = new Matrix(testX.getRowDimension(), 1);
+		//Matrix resultMean = new Matrix(testX.getRowDimension(), 1);
+		//Matrix resultVariance = new Matrix(testX.getRowDimension(), 1);
 
 		// marginalize the gaussianprocess mixture using equations
 		// 3.8.18 and 3.8.19
+        /*
 		for (int i = 0; i < gaussianProcesses.size(); i++) {
 			GaussianProcess process = gaussianProcesses.get(i);
 
@@ -69,6 +70,13 @@ public class GaussianProcessMixture implements
 
 		return new GaussianProcessMixturePrediction(testX, resultMean,
 				resultVariance);
+		*/
+		GaussianProcess process = gaussianProcesses.get(0);
+
+		GaussianProcessPrediction prediction = process
+				.calculatePrediction(testX);
+		return new GaussianProcessMixturePrediction(testX, prediction.getMean(),
+				prediction.getVariance(), process.getStd());
 	}
 
 	public Matrix getTrainX() {

@@ -6,7 +6,7 @@ import Jama.Matrix;
 public class GaussianProcessMixturePrediction extends GaussianProcessPrediction {
 
 	public GaussianProcessMixturePrediction(Matrix testX, Matrix mean,
-			Matrix variance) {
-		super(testX, mean, variance);
+			Matrix variance, double std) {
+		super(testX, mean, variance, std);
 	}
 }

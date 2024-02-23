@@ -13,12 +13,12 @@ public class GaussianProcessPrediction implements GaussianPrediction {
 	private final Matrix standardDeviation;
 	private Matrix covarianceMatrix;
 
-	public GaussianProcessPrediction(Matrix testX, Matrix mean, Matrix variance) {
-		this(testX, mean, variance, null);
+	public GaussianProcessPrediction(Matrix testX, Matrix mean, Matrix variance, double _y_train_std) {
+		this(testX, mean, variance, null, _y_train_std);
 	}
 
 	public GaussianProcessPrediction(Matrix testX, Matrix mean,
-			Matrix variance, Matrix minus) {
+			Matrix variance, Matrix minus, double _y_train_std) {
 		this.testX = testX;
 		this.mean = mean;
 		this.variance = variance;
@@ -26,7 +26,7 @@ public class GaussianProcessPrediction implements GaussianPrediction {
 		this.covarianceMatrix = minus;
 
 		for (int i = 0; i < standardDeviation.getRowDimension(); i++) {
-			standardDeviation.set(i, 0, Math.sqrt(standardDeviation.get(i, 0)));
+			standardDeviation.set(i, 0, Math.sqrt(standardDeviation.get(i, 0) * Math.pow(_y_train_std, 2)));
 		}
 	}
 

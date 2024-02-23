@@ -11,6 +11,8 @@ public class GaussianProcess implements
 		GaussianPredictor<GaussianProcessPrediction> {
 
 	private final Matrix trainX;
+	private double _y_train_mean = 0.0;
+	private double _y_train_std = 0.0;
 	private final Matrix alpha;
 	private final Matrix cholTrainingCovarianceMatrix;
 	private final CovarianceFunction function;
@@ -31,14 +33,14 @@ public class GaussianProcess implements
 
 		this.trainX = trainX;
 		this.trainY = trainY;
+
 		this.alpha = alpha;
 		this.cholTrainingCovarianceMatrix = cholTrainingCovarianceMatrix;
 		this.function = function;
 		this.loghyper = loghyper;
 		this.logLikelihood = logLikelihood;
 
-		Validate
-				.isTrue(function.getHyperParameterCount(trainX) == loghyper.length);
+		//Validate.isTrue(function.getHyperParameterCount(trainX) == loghyper.length);
 		Validate.isTrue(trainY.getColumnDimension() == 1);
 	}
 
@@ -54,7 +56,19 @@ public class GaussianProcess implements
 		Matrix testCovarianceMatrix = function.calculateTestCovarianceMatrix(
 				loghyper, testX);
 
-		Matrix mean = trainTestCovarianceMatrix.transpose().times(alpha);
+		Matrix mean_ = trainTestCovarianceMatrix.transpose().times(alpha);
+
+		//Matrix mean = _y_train_std * mean_ + _y_train_mean;
+
+		Matrix mean = new Matrix(mean_.getRowDimension(), mean_.getColumnDimension());
+		double[][] meanArray = mean.getArray();
+		double[][] A = mean_.getArray();
+
+		for(int i = 0; i < mean_.getRowDimension(); ++i) {
+			for(int j = 0; j < mean_.getColumnDimension(); ++j) {
+				meanArray[i][j] = A[i][j] * _y_train_std + _y_train_mean;
+			}
+		}
 
 		Matrix L = cholTrainingCovarianceMatrix;
 
@@ -71,6 +85,7 @@ public class GaussianProcess implements
 
 		Matrix covariance = testCovarianceMatrix.minus(MatrixUtils.sum(
 				v.arrayTimes(v)).transpose());
+		//Matrix covariance = MatrixUtils.sqrt(covariance_.times(Math.pow(_y_train_std, 2)));
 
 		if (calculateCovarianceMatrix) {
 			Matrix testTestCovarianceMatrix = function
@@ -79,9 +94,9 @@ public class GaussianProcess implements
 			Matrix conditionedTestCovarianceMatrix = testTestCovarianceMatrix
 					.minus(v.transpose().times(v));
 			return new GaussianProcessPrediction(testX, mean, covariance,
-					conditionedTestCovarianceMatrix);
+					conditionedTestCovarianceMatrix, _y_train_std);
 		} else {
-			return new GaussianProcessPrediction(testX, mean, covariance);
+			return new GaussianProcessPrediction(testX, mean, covariance, _y_train_std);
 		}
 
 	}
@@ -112,5 +127,14 @@ public class GaussianProcess implements
 
 	public double getLogLikelihood() {
 		return logLikelihood;
+	}
+
+	public void setMeanStd(double mean, double std) {
+		_y_train_mean = mean;
+		_y_train_std = std;
+	}
+
+	public double getStd() {
+		return _y_train_std;
 	}
 }
