@@ -19,7 +19,7 @@ public class GaussianProcessMixture implements
 
 	protected GaussianProcessMixture(List<GaussianProcess> gaussianProcesses,
 			List<Double> weights) {
-		Validate.isTrue(gaussianProcesses.size() == weights.size());
+		//Validate.isTrue(gaussianProcesses.size() == weights.size());
 
 		this.gaussianProcesses = gaussianProcesses;
 		this.weights = weights;
@@ -44,39 +44,41 @@ public class GaussianProcessMixture implements
 	}
 
 	public GaussianProcessMixturePrediction calculatePrediction(Matrix testX) {
-		//Matrix resultMean = new Matrix(testX.getRowDimension(), 1);
-		//Matrix resultVariance = new Matrix(testX.getRowDimension(), 1);
+		Matrix resultMean = new Matrix(testX.getRowDimension(), 1);
+		Matrix resultVariance = new Matrix(testX.getRowDimension(), 1);
+        double yTrainStd = 0.0;
 
 		// marginalize the gaussianprocess mixture using equations
 		// 3.8.18 and 3.8.19
-        /*
-		for (int i = 0; i < gaussianProcesses.size(); i++) {
-			GaussianProcess process = gaussianProcesses.get(i);
+        if (gaussianProcesses.size() > 1) {
+			for (int i = 0; i < gaussianProcesses.size(); i++) {
+				GaussianProcess process = gaussianProcesses.get(i);
+
+				GaussianProcessPrediction prediction = process
+						.calculatePrediction(testX);
+				double weight = weights.get(i);
+				Matrix mean = prediction.getMean();
+				Matrix variance = prediction.getVariance();
+
+				resultMean.plusEquals(mean.times(weight));
+
+				Matrix meanSq = mean.arrayTimes(mean);
+
+				resultVariance.plusEquals(variance.plus(meanSq).times(weight));
+			}
+
+			resultVariance.minusEquals(resultMean.arrayTimes(resultMean));
+		} else if(gaussianProcesses.size() == 1) {
+			GaussianProcess process = gaussianProcesses.get(0);
 
 			GaussianProcessPrediction prediction = process
 					.calculatePrediction(testX);
-			double weight = weights.get(i);
-			Matrix mean = prediction.getMean();
-			Matrix variance = prediction.getVariance();
-
-			resultMean.plusEquals(mean.times(weight));
-
-			Matrix meanSq = mean.arrayTimes(mean);
-
-			resultVariance.plusEquals(variance.plus(meanSq).times(weight));
+			return new GaussianProcessMixturePrediction(testX, prediction.getMean(),
+					prediction.getVariance(), process.getStd());
 		}
 
-		resultVariance.minusEquals(resultMean.arrayTimes(resultMean));
-
 		return new GaussianProcessMixturePrediction(testX, resultMean,
-				resultVariance);
-		*/
-		GaussianProcess process = gaussianProcesses.get(0);
-
-		GaussianProcessPrediction prediction = process
-				.calculatePrediction(testX);
-		return new GaussianProcessMixturePrediction(testX, prediction.getMean(),
-				prediction.getVariance(), process.getStd());
+				resultVariance, 1.0);
 	}
 
 	public Matrix getTrainX() {

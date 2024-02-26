@@ -3,6 +3,7 @@ package uk.ac.soton.ecs.gp4j.gp
 import Jama.{CholeskyDecomposition, Matrix}
 import breeze.linalg.DenseVector
 import breeze.optimize.{DiffFunction, LBFGSB}
+import org.apache.commons.lang.NotImplementedException
 import uk.ac.soton.ecs.gp4j.gp.covariancefunctions.{CovarianceFunction, Matern3ARDCovarianceFunction}
 
 import scala.util.Random
@@ -55,7 +56,7 @@ object GetBestLengthScale {
 
     val f = new DiffFunction[DenseVector[Double]] {
       override def calculate(lengthScale: DenseVector[Double]): (Double, DenseVector[Double]) = {
-        val input: Array[Double] = Array(lengthScale.valueAt(0), 0.0, 0.0)
+        val input: Array[Double] = Array(lengthScale.valueAt(0), lengthScale.valueAt(0), lengthScale.valueAt(0))
         val cost = costFunc(covarianceFunction, input, trainX, trainY)
         val grad = evalGradient(covarianceFunction, input, trainX, cost._2, cost._3)
         (-cost._1, grad)

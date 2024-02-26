@@ -111,8 +111,7 @@ public class Matern3ARDCovarianceFunction implements CovarianceFunction {
 		double[][] array = matrix.getArrayCopy();
 
 		for (int i = 0; i < loghyper.length - 1; i++) {
-			//double lengthScale = Math.exp(loghyper[i]);
-			double lengthScale = Math.exp(loghyper[0]);
+			double lengthScale = Math.exp(loghyper[i]);
 
 			for (int j = 0; j < array.length; j++) {
 				array[j][i] /= lengthScale;

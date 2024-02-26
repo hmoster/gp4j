@@ -14,6 +14,7 @@ import org.apache.commons.math3.stat.StatUtils;
 import scala.collection.immutable.Vector;
 import uk.ac.soton.ecs.gp4j.gp.*;
 import uk.ac.soton.ecs.gp4j.gp.covariancefunctions.CovarianceFunction;
+import uk.ac.soton.ecs.gp4j.gp.covariancefunctions.Matern3ARDCovarianceFunction;
 import uk.ac.soton.ecs.gp4j.util.ArrayUtils;
 import uk.ac.soton.ecs.gp4j.util.MathUtils;
 import uk.ac.soton.ecs.gp4j.util.MatrixUtils;
@@ -30,6 +31,7 @@ public class GaussianProcessRegressionBMC implements
 	private List<BasicPrior> priors;
 
 	private List<GaussianProcessRegression> gpRegressions;
+	private GaussianProcessRegression gpRegressions_;
 
 	private List<Double> weights;
 
@@ -94,6 +96,8 @@ public class GaussianProcessRegressionBMC implements
 					function));
 		}
 
+		double[] loghyper = new double[] {0.0};
+		gpRegressions_ = new GaussianProcessRegression(loghyper, new Matern3ARDCovarianceFunction());
 		// for (int j = 0; j < samples.length; j++) {
 		// log.debug("Sample : " + ArrayUtils.toString(samples[j]));
 		// }
@@ -173,24 +177,30 @@ public class GaussianProcessRegressionBMC implements
 		initialize();
 		List<GaussianProcess> gaussianProcesses = new ArrayList<GaussianProcess>();
 
-		for (GaussianProcessRegression gpRegression : gpRegressions) {
+		try {
 			double _y_train_mean = MatrixUtils.getMean(trainY);
 			double _y_train_std = MatrixUtils.getStd(trainY, _y_train_mean);
 			Matrix trainY_ = MatrixUtils.getNorm(trainY, _y_train_mean, _y_train_std);
-			double[] bestParams = GetBestLengthScale.chooseHyperparams(gpRegression.getFunction(), trainX, trainY_);
+			double[] bestParams = GetBestLengthScale.chooseHyperparams(gpRegressions_.getFunction(), trainX, trainY_);
 			List<Double> bestParams_ = new ArrayList<Double>();
 			for (double d : bestParams) {
 				bestParams_.add(d);
+				bestParams_.add(d);
+				bestParams_.add(d);
 			}
-			bestParams_.add(0.0);
-			bestParams_.add(0.0);
 
-			//List bestParams_ = Arrays.asList(bestParams);
-			gpRegression.setHyperParameters(bestParams_);
-			GaussianProcess gp = gpRegression.calculateRegression(trainX,
+			gpRegressions_.setHyperParameters(bestParams_);
+			GaussianProcess gp = gpRegressions_.calculateRegression(trainX,
 					trainY_);
 			gp.setMeanStd(_y_train_mean, _y_train_std);
 			gaussianProcesses.add(gp);
+		} catch (RuntimeException e) {
+			System.out.println(e);
+			for (GaussianProcessRegression gpRegression : gpRegressions) {
+				GaussianProcess gp = gpRegression.calculateRegression(trainX,
+						trainY);
+				gaussianProcesses.add(gp);
+			}
 		}
 
 		calculateWeights();

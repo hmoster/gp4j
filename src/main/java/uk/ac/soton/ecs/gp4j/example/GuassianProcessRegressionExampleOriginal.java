@@ -101,9 +101,13 @@ public class GuassianProcessRegressionExampleOriginal {
 
 		//regression.setPriors(new BasicPrior(11, 1.0, 2.0), new BasicPrior(11,
 		//		1.0, 2.0), new BasicPrior(1, .01, 1.0));
-		regression.setPriors(new BasicPrior(1, 1.0, 1.0), new BasicPrior(1,
-				1.0, 1.0),new BasicPrior(1, 1.0, 1.0));
+		//regression.setPriors(new BasicPrior(1, 1.0, 1.0), new BasicPrior(1,
+		//		1.0, 1.0),new BasicPrior(1, 1.0, 1.0));
 
+		regression.setPriors(new BasicPrior(11, 1.0, 2.0),
+				new BasicPrior(11,1.0, 2.0),
+				new BasicPrior(11, 1.0, 2.0),
+				new BasicPrior(1, .01, 1.0));
 		//double[] trainX = new double[] { 1.0, 2.0, 3.0, 4.0, 5.0, 6.0 };
 		//double[] trainY = new double[] { 1.0, 1.0, 1.0, 1.5, .5, 0.0 };
 		//double[] trainX = { -1.6595599059485195, 4.4064898688431615, -9.997712503653101, -3.9533485473632046 };
