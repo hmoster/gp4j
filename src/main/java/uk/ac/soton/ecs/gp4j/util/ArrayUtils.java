@@ -1,6 +1,6 @@
 package uk.ac.soton.ecs.gp4j.util;
 
-import org.apache.commons.math.stat.StatUtils;
+import org.apache.commons.math3.stat.StatUtils;
 
 public class ArrayUtils extends org.apache.commons.lang.ArrayUtils {
 	public static double[][] combine(double[][] combinations, double[] addition) {

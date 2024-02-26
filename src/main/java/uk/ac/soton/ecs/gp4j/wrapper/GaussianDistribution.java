@@ -3,8 +3,8 @@
  */
 package uk.ac.soton.ecs.gp4j.wrapper;
 
-import org.apache.commons.math.stat.descriptive.moment.Mean;
-import org.apache.commons.math.stat.descriptive.moment.StandardDeviation;
+import org.apache.commons.math3.stat.descriptive.moment.Mean;
+import org.apache.commons.math3.stat.descriptive.moment.StandardDeviation;
 
 /**
  * This class represent the normal distribution of the data

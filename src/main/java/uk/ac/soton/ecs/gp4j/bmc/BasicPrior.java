@@ -1,7 +1,7 @@
 package uk.ac.soton.ecs.gp4j.bmc;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
-import org.apache.commons.math.stat.StatUtils;
+import org.apache.commons.math3.stat.StatUtils;
 
 import uk.ac.soton.ecs.gp4j.util.ArrayUtils;
 

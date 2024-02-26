@@ -1,7 +1,7 @@
 package uk.ac.soton.ecs.gp4j.util;
 
-import org.apache.commons.math.random.RandomData;
-import org.apache.commons.math.random.RandomDataImpl;
+import org.apache.commons.math3.random.RandomData;
+import org.apache.commons.math3.random.RandomDataImpl;
 
 import uk.ac.soton.ecs.gp4j.gp.covariancefunctions.CovarianceFunction;
 import Jama.CholeskyDecomposition;
