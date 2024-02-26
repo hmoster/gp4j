@@ -79,10 +79,18 @@ public class GaussianProcessRegression implements
 		this.loghyper = new double[hyper.size()];
 
 		for (int i = 0; i < hyper.size(); i++) {
-			loghyper[i] = hyper.get(i);
+			loghyper[i] = Math.log(hyper.get(i));
 		}
 	}
 
+	public void setAutoHyperParameters(List<Double> hyper) {
+		this.loghyper = new double[hyper.size()];
+
+		for (int i = 0; i < hyper.size(); i++) {
+			loghyper[i] = hyper.get(i);
+		}
+	}
+	
 	public void setLogHyperParameters(double[] hyper) {
 		Validate.notNull(hyper);
 		this.loghyper = hyper;

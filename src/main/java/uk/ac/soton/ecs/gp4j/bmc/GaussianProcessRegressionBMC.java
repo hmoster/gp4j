@@ -189,7 +189,7 @@ public class GaussianProcessRegressionBMC implements
 				bestParams_.add(d);
 			}
 
-			gpRegressions_.setHyperParameters(bestParams_);
+			gpRegressions_.setAutoHyperParameters(bestParams_);
 			GaussianProcess gp = gpRegressions_.calculateRegression(trainX,
 					trainY_);
 			gp.setMeanStd(_y_train_mean, _y_train_std);

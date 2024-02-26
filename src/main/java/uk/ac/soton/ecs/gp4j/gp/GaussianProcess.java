@@ -12,7 +12,7 @@ public class GaussianProcess implements
 
 	private final Matrix trainX;
 	private double _y_train_mean = 0.0;
-	private double _y_train_std = 0.0;
+	private double _y_train_std = 1.0;
 	private final Matrix alpha;
 	private final Matrix cholTrainingCovarianceMatrix;
 	private final CovarianceFunction function;
