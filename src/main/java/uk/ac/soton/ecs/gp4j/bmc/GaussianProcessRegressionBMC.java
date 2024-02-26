@@ -11,7 +11,6 @@ import org.apache.commons.lang.NotImplementedException;
 import org.apache.commons.lang.Validate;
 import org.apache.commons.math3.stat.StatUtils;
 
-import scala.collection.immutable.Vector;
 import uk.ac.soton.ecs.gp4j.gp.*;
 import uk.ac.soton.ecs.gp4j.gp.covariancefunctions.CovarianceFunction;
 import uk.ac.soton.ecs.gp4j.gp.covariancefunctions.Matern3ARDCovarianceFunction;

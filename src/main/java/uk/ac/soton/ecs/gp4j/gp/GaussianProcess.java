@@ -58,8 +58,6 @@ public class GaussianProcess implements
 
 		Matrix mean_ = trainTestCovarianceMatrix.transpose().times(alpha);
 
-		//Matrix mean = _y_train_std * mean_ + _y_train_mean;
-
 		Matrix mean = new Matrix(mean_.getRowDimension(), mean_.getColumnDimension());
 		double[][] meanArray = mean.getArray();
 		double[][] A = mean_.getArray();
@@ -85,7 +83,6 @@ public class GaussianProcess implements
 
 		Matrix covariance = testCovarianceMatrix.minus(MatrixUtils.sum(
 				v.arrayTimes(v)).transpose());
-		//Matrix covariance = MatrixUtils.sqrt(covariance_.times(Math.pow(_y_train_std, 2)));
 
 		if (calculateCovarianceMatrix) {
 			Matrix testTestCovarianceMatrix = function
